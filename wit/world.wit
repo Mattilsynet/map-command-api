@@ -1,0 +1,9 @@
+package mattilsynet:map-command-api;
+
+world map-command-api {
+
+  include wasmcloud:component-go/imports@0.1.0;
+  import mattilsynet:provider-jetstream-nats/jetstream-publish;
+  export wasmcloud:messaging/handler@0.2.0;
+  import wasmcloud:messaging/consumer@0.2.0;
+}
