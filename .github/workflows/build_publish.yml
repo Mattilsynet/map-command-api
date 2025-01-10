@@ -22,10 +22,6 @@ jobs:
        with:
          tinygo-version: '0.33.0'
          install-binaryen: 'false'
-     - name: go mod tidy
-       shell: bash
-       run: |
-          go mod tidy
      - name: install wash tools
        uses: taiki-e/install-action@v2
        with:
