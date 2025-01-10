@@ -30,10 +30,6 @@ jobs:
        uses: taiki-e/install-action@v2
        with:
          tool: wit-bindgen-cli, wasm-tools, wit-deps-cli
-     - name: install wit-bindgen-go
-       shell: bash
-       run: | 
-          go install github.com/bytecodealliance/wasm-tools-go/cmd/wit-bindgen-go
      - name: install wash-cli cached
        uses: taiki-e/cache-cargo-install-action@v2
        with:
@@ -45,7 +41,7 @@ jobs:
      - name: generate go files
        shell: bash
        run: |
-          wit-bindgen-go generate --world map-command-api --out gen ./wit 
+          go generate ./...
      - name: validate-yaml
        shell: bash
        run: |
