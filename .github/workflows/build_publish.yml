@@ -1,8 +1,10 @@
 name: build_push
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - master
+    # tags:
+    #   - 'v*'
       
 jobs:
   wash-build:
@@ -30,6 +32,10 @@ jobs:
        uses: taiki-e/cache-cargo-install-action@v2
        with:
          tool: wash-cli
+     - name: install wit-bindgen-go
+       shell: bash
+       run: | 
+          go install github.com/bytecodealliance/wasm-tools-go/cmd/wit-bindgen-go
      - name: wit-deps
        shell: bash
        run: |
@@ -43,18 +49,18 @@ jobs:
        run: |
           [[ ! -f wadm.yaml ]] || wash app validate wadm.yaml
           [[ ! -f local.wadm.yaml ]] || wash app validate local.wadm.yaml
-     - name: wash build
-       shell: bash
-       run: |
-         wash build
-     - name: publish package to github repository 
-       env:
-         WASH_REG_USER: ${{ github.repository_owner }}
-         WASH_REG_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-       shell: bash
-       run: |
-          wash push ghcr.io/${{ github.repository }}:${{ github.ref_name }} ${{ env.built_file_name }} --annotation org.opencontainers.image.source=${{github.server_url}}/${{ github.repository }}
-       working-directory: build
+     # - name: wash build
+     #   shell: bash
+     #   run: |
+     #     wash build
+     # - name: publish package to github repository 
+     #   env:
+     #     WASH_REG_USER: ${{ github.repository_owner }}
+     #     WASH_REG_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+     #   shell: bash
+     #   run: |
+     #      wash push ghcr.io/${{ github.repository }}:${{ github.ref_name }} ${{ env.built_file_name }} --annotation org.opencontainers.image.source=${{github.server_url}}/${{ github.repository }}
+     #   working-directory: build
 
 
 #TODO: run wash up, wash apply and check output for success messages
