@@ -11,7 +11,7 @@ spec:
     - name: map-command-api
       type: component
       properties:
-        image: file://./build/map-command-api_s.wasm
+        image: ghcr.io/Mattilsynet/map-command-api:v0.0.1-pre2
       traits:
         - type: spreadscaler
           properties:
@@ -37,7 +37,7 @@ spec:
     - name: map-jetstream-nats
       type: capability
       properties:
-        image: file://./../map-providers/map-nats-consumer/build/map-jetstream-nats.par.gz
+        image: ghcr.io/Mattilsynet/map-nats-jetstream:v0.0.1-pre2
     - name: nats
       type: capability
       properties:
