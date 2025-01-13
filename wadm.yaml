@@ -5,7 +5,7 @@ metadata:
   annotations:
     version: v0.0.1
     description: ''
-    wasmcloud.dev/authors: Mattilsynet Plattform team
+    authors: Mattilsynet Plattform team
 spec:
   components:
     - name: map-command-api
@@ -37,7 +37,7 @@ spec:
     - name: map-jetstream-nats
       type: capability
       properties:
-        image: ghcr.io/Mattilsynet/map-nats-jetstream:v0.0.1-pre2
+        image: ghcr.io/Mattilsynet/map-nats-jetstream:v0.0.1-pre-2
     - name: nats
       type: capability
       properties:
