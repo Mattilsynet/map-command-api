@@ -16,7 +16,7 @@ spec:
     - name: map-command-api
       type: component
       properties:
-        image: ghcr.io/Mattilsynet/map-command-api:v0.0.1-pre2
+        image: ghcr.io/Mattilsynet/map-command-api:v0.0.1-pre-10
       traits:
         - type: spreadscaler
           properties:
