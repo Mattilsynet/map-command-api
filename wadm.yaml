@@ -23,8 +23,7 @@ spec:
             replicas: 1
         - type: link
           properties:
-            target: 
-              name: nats-core
+            target: nats-core
             namespace: wasmcloud
             package: messaging
             interfaces: [consumer]
@@ -57,8 +56,15 @@ spec:
             properties:
               cluster_uris: "nats://connect.nats.mattilsynet.io"
               subscriptions: map.apply, map.delete
-              client_jwt: ""
-              client_seed: ""
+        secrets:
+          - name: client_seed
+            properties:
+              policy: nats-kv
+              key: client_seed
+          - name: client_jwt
+            properties:
+              policy: nats-kv
+              key: client_jwt
       traits:
         - type: spreadscalar
           properties:
