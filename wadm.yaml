@@ -4,9 +4,14 @@ metadata:
   name: map-command-api
   annotations:
     version: v0.0.1
-    description: ''
+    description: 'Takes in command from map-cli, adds an id, then further sends to an interest based workqueue for further handling'
     authors: Mattilsynet Plattform team
 spec:
+  policies:
+    - name: nats-kv
+      type: policy.secret.wasmcloud.dev/v1alpha1
+      properties:
+        backend: nats-kv
   components:
     - name: map-command-api
       type: component
@@ -18,30 +23,42 @@ spec:
             replicas: 1
         - type: link
           properties:
-            target: nats
+            target: 
+              name: nats-core
             namespace: wasmcloud
             package: messaging
             interfaces: [consumer]
-        - type: link    
+        - type: link
           properties:
-            target: map-jetstream-nats
+            target:
+              name: map-jetstream-nats
+              secrets:
+                - name: nats-credentials
+                  properties:
+                    policy: nats-kv
+                    key: map-query-api-nats-credentials
+              config:
+                - name: nats-jetstream-config
+                  properties:
+                    url: "nats://connect.nats.mattilsynet.io"
             namespace: mattilsynet
             package: provider-jetstream-nats
             interfaces: [jetstream-publish]
-            target_config:
-              - name: nats-config
-                properties:
-                  jwt: ""
-                  seed: ""
-                  url: "nats://localhost:4222"
     - name: map-jetstream-nats
       type: capability
       properties:
-        image: ghcr.io/Mattilsynet/map-nats-jetstream:v0.0.1-pre-2
-    - name: nats
+        image: ghcr.io/Mattilsynet/map-nats-jetstream:v0.0.1-pre-17
+    - name: nats-core
       type: capability
       properties:
-        image: ghcr.io/wasmcloud/messaging-nats:canary
+        image: ghcr.io/wasmcloud/messaging-nats:7ce09da
+        config:
+          - name: nats-core-config
+            properties:
+              cluster_uris: "nats://connect.nats.mattilsynet.io"
+              subscriptions: map.apply, map.delete
+              client_jwt: ""
+              client_seed: ""
       traits:
         - type: spreadscalar
           properties:
@@ -49,11 +66,6 @@ spec:
         - type: link
           properties:
             target: map-command-api
-            namespace: mattilsynet
-            package: provider-jetstream-nats
+            namespace: wasmcloud
+            package: messaging
             interfaces: [handler]
-            source_config:
-              - name: map-command-api-subject
-                properties:
-                  subscriptions: map.apply, map.delete
- 
