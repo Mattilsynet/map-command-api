@@ -29,22 +29,22 @@ spec:
               config:
                 - name: nats-jetstream-config
                   properties:
-                    url: "nats://localhost:4222"
+                    url: "nats://127.0.0.1:4222"
             namespace: mattilsynet
             package: provider-jetstream-nats
             interfaces: [jetstream-publish]
     - name: map-jetstream-nats
       type: capability
       properties:
-        image: ghcr.io/Mattilsynet/map-nats-jetstream:v0.0.1-pre-17
+        image: ghcr.io/Mattilsynet/map-nats-jetstream:v0.0.1-pre-21
     - name: nats-core
       type: capability
       properties:
-        image: ghcr.io/wasmcloud/messaging-nats:7ce09da
+        image: ghcr.io/wasmcloud/messaging-nats:canary
         config:
           - name: nats-core-config
             properties:
-              cluster_uris: "nats://localhost:4222"
+              cluster_uris: "nats://127.0.0.1:4222"
               subscriptions: map.apply, map.delete
       traits:
         - type: spreadscalar
@@ -55,4 +55,4 @@ spec:
             target: map-command-api
             namespace: wasmcloud
             package: messaging
-            interfaces: [handler]  
+            interfaces: [handler]
