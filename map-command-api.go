@@ -60,7 +60,7 @@ func MapCommandApi(msg *nats.Msg) *nats.Msg {
 	replyMsg.Data = bytes
 	err = js.Publish(subj.ToCommand(cmd), bytes)
 	if err != nil {
-		logger.Error("error publishing", "err", err)
+		logger.Error("error publishing", "err", err, "subject", subj.ToCommand(cmd))
 		replyMsg.Data = []byte(err.Error())
 	}
 	return replyMsg
